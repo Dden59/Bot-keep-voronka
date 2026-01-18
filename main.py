@@ -1,3 +1,5 @@
+import socket
+socket.getaddrinfo = lambda *args, **kwargs: [(socket.AF_INET, socket.SOCK_STREAM, 6, '', (args[0], args[1]))]
 import asyncio
 import logging
 

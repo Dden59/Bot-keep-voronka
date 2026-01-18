@@ -54,7 +54,7 @@ class ClientKeyboard:
         if user_info[3] != "dep":
             ikb.button(text=languages[lang]["get_signal"], callback_data="register")
         else:
-            ikb.button(text=languages[lang]["get_signal"], web_app=types.WebAppInfo(url="https://dden59.github.io/keeper/"))
+            ikb.button(text=languages[lang]["get_signal"], web_app=types.WebAppInfo(url="https://rocket-keeper-v2-0.vercel.app"))
             
 
         ikb.adjust(2, 1, 1)
@@ -89,7 +89,7 @@ class ClientKeyboard:
     @staticmethod
     async def get_signal_keyboard(lang: str):
         ikb = InlineKeyboardBuilder()
-        ikb.button(text=languages[lang]["get_signal"], web_app=types.WebAppInfo(url="https://dden59.github.io/keeper/"))
+        ikb.button(text=languages[lang]["get_signal"], web_app=types.WebAppInfo(url="https://rocket-keeper-v2-0.vercel.app"))
         ikb.button(text=languages[lang]["back"], callback_data="back")
         ikb.adjust(1)
         return ikb.as_markup()

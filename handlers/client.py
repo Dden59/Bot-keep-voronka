@@ -207,8 +207,12 @@ async def instruction_handler(callback: types.CallbackQuery):
     except:
         pass
     photo = types.FSInputFile("inst.png")
-    await callback.message.answer_photo(photo, text, reply_markup=await ClientKeyboard.back_keyboard(lang),
-                                  parse_mode="HTML")
+    await callback.message.answer_photo(
+        photo,
+        caption=text,  # <--- ВОТ ТУТ МЫ ДОБАВИЛИ caption=
+        reply_markup=await ClientKeyboard.back_keyboard(lang),
+        parse_mode="HTML"
+    )
 
 
 

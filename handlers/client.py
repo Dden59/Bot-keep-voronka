@@ -13,6 +13,8 @@ from database.db import DataBase
 from keyboards.client import ClientKeyboard
 from other.filters import ChatJoinFilter, RegisteredFilter, IsPostbackChat
 from other.languages import languages
+# Импортируем нашу функцию
+from other.misc import create_ref_link
 
 router = Router()
 
@@ -127,7 +129,7 @@ async def get_language(query: Message | CallbackQuery, first: bool = False):
 
     photo = types.FSInputFile("lang.jpg")
     await query.answer_photo(photo, caption="Select language", 
-                              reply_markup=await ClientKeyboard.languages_board(prefix))
+                             reply_markup=await ClientKeyboard.languages_board(prefix))
 
 
 
@@ -198,7 +200,11 @@ async def register_handler(callback: types.CallbackQuery, state: FSMContext):
 @router.callback_query(F.data == "instruction")
 async def instruction_handler(callback: types.CallbackQuery):
     user_id = callback.from_user.id
-    new_ref_url = f"{(await DataBase.get_ref())}&sub1={user_id}"
+    
+    # ИСПРАВЛЕНИЕ: Используем функцию create_ref_link
+    base_ref = await DataBase.get_ref()
+    new_ref_url = create_ref_link(base_ref, user_id)
+    
     lang = await DataBase.get_lang(callback.from_user.id)
     text = languages[lang]["instruction_info"].format(ref_url=new_ref_url)
 
@@ -209,7 +215,7 @@ async def instruction_handler(callback: types.CallbackQuery):
     photo = types.FSInputFile("inst.png")
     await callback.message.answer_photo(
         photo,
-        caption=text,  # <--- ВОТ ТУТ МЫ ДОБАВИЛИ caption=
+        caption=text, 
         reply_markup=await ClientKeyboard.back_keyboard(lang),
         parse_mode="HTML"
     )

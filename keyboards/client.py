@@ -4,7 +4,8 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from config import CHANNEL_URL, SUPP
 from database.db import DataBase
 from other.languages import languages
-
+# Импортируем нашу новую функцию
+from other.misc import create_ref_link 
 
 
 class ClientKeyboard:
@@ -64,7 +65,11 @@ class ClientKeyboard:
     async def register_keyboard(callback: types.CallbackQuery, lang: str):
         ikb = InlineKeyboardBuilder()
         user_id = callback.from_user.id
-        new_ref_url = f"{(await DataBase.get_ref())}?sub1={user_id}"
+        
+        # ИСПРАВЛЕНИЕ: Используем функцию create_ref_link
+        base_ref = await DataBase.get_ref()
+        new_ref_url = create_ref_link(base_ref, user_id)
+        
         ikb.button(text=languages[lang]["register_action"], url=new_ref_url)
         ikb.button(text=languages[lang]["back"], callback_data="back")
         ikb.adjust(1)
@@ -74,7 +79,11 @@ class ClientKeyboard:
     async def dep_keyboard(callback: types.CallbackQuery, lang: str):
         ikb = InlineKeyboardBuilder()
         user_id = callback.from_user.id
-        new_ref_url = f"{(await DataBase.get_ref())}&sub1={user_id}"
+        
+        # ИСПРАВЛЕНИЕ: Используем функцию create_ref_link
+        base_ref = await DataBase.get_ref()
+        new_ref_url = create_ref_link(base_ref, user_id)
+        
         ikb.button(text=languages[lang]["dep_action"], url=new_ref_url)
         ikb.button(text=languages[lang]["back"], callback_data="back")
         ikb.adjust(1)
